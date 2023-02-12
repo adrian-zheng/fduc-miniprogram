@@ -1,0 +1,327 @@
+<!--pages/home/rehearsal.wxml-->
+<image style="display:block; height: {{navH}}px; width: {{deviceW}}px;" mode="scaleToFill"
+src="{{navbarUrl}}"></image>
+
+<van-tabs animated color='#ffffff' nav-class="tabs" swipeable bind:change="onChangeTab"
+title-inactive-color="#c4c4c4" title-active-color="white">
+  <!-- 考勤tab -->
+  <van-tab title="考勤">
+    <view>
+
+
+      <!-- 发布签到（管理员） -->
+      <view wx:if="{{ role == 2 }}">
+        
+        <!-- 生成Excel-选项 -->
+        <view class="add-wrap" wx:if="{{ active == 0 }}" hidden="{{ showMenu }}" bindtap="chooseGenExcelOptions">
+          <view class="iconBack">
+            <van-icon name="ellipsis" color="#5ba585" size="30px" />
+          </view>
+        </view>
+
+        
+        
+        <form bindsubmit="submitData">
+          <van-cell-group title="创建考勤(仅管理员可用)" border="{{false}}">
+            <!-- 1. 选择排练开始、结束时间点，作为新记录添加进数据库rehearsal中 -->
+            <!-- 开始时间 -->
+            <van-cell title="签到开始时间" title-class="cellTitle" is-link
+            value="{{ startString }}" bind:click="showStart"
+            border="{{ false }}"/>  
+            <van-popup position="bottom" show="{{ showStart }}" bind:close="closeStart">
+              <van-datetime-picker
+              type="datetime"
+              title="签到开始时间"
+              value="{{ start }}"
+              bind:cancel="closeStart" 
+              bind:confirm="onStart"
+              min-date="{{ minDate }}"
+              max-date="{{ maxDate }}"
+              />
+            </van-popup>
+            <!-- 结束时间 -->
+            <van-cell title="持续时间" title-class="cellTitle" is-link
+            value="{{duration}}" bind:click="showDuration" border="{{ false }}"/>  
+            <van-popup position="bottom" show="{{ showDuration }}" bind:close="closeDuration">
+              <van-picker show-toolbar bind:cancel="closeDuration" bind:confirm="onDuration"
+            columns="{{ durationArr }}" title="持续时间"/>
+            </van-popup>
+            <!-- 2. 选择签到口令（不可与已有签到口令重复），作为新字段添加到新纪录中，同时存一个空list进去 -->
+              <van-field
+              label="签到口令"
+              model:value="{{ code }}"
+              placeholder="{{!showMenu?'请输入签到口令':''}}"
+              disabled="{{ showMenu }}"
+              border="{{ false }}"
+              input-align="right"
+              />
+            <view class="profile-btn">
+              <button formType="submit" disabled="{{disabled}}">发布签到</button>
+            </view>
+
+            
+          </van-cell-group>
+
+        </form>
+        <van-divider hairline/>
+      </view>
+
+      <!-- 签到本体 -->
+      <view>
+        <!-- 1. 从后端按照时间顺序获取考勤列表（一个数据库）: 在js中的onShow中完成，并存到data的rehearsal中-->
+        <!-- 2. 前端渲染列表（日期+考勤开始时间+是否正在考勤） -->
+        <scroll-view scroll-y="true" style="height: {{safeH}}px;" refresher-enabled='true' bindrefresherrefresh="refreshList" refresher-triggered="{{loading}}">
+          <view style="padding: 0 0 180rpx">
+            <!-- <view wx:key="item" wx:for="{{rehearsal}}"
+            wx:for-index="key" wx:for-item="value">{{value.year}}</view> -->
+            <van-cell-group title="{{ curSem }}" border="{{false}}">
+              <van-cell-group inset
+              wx:key="item" wx:for="{{rehearsal}}"
+              wx:for-index="key" wx:for-item="value"
+              class="vanBlock" border="{{false}}">
+                <!-- 签到中 -->
+                <van-cell title-width="170rpx"
+                wx:if="{{value.ifNow == 0 && !ifCY}}" value="签到中，点击进入签到"
+                bind:click="showAttendance" 
+                data-year="{{value.year}}" data-month="{{value.month}}" data-day="{{value.day}}" 
+                data-hour="{{value.hour}}" data-minute="{{value.minute}}" data-second="{{value.second}}"
+                center="true" class="blockContent goingOn" border="{{false}}">
+                  <view slot="title" style="display:flex">
+                    <van-icon wx:if="{{value.status == 'check'}}" name="passed" color="#5ba585" />
+                    <van-icon wx:if="{{value.status == 'leave'}}" name="records" color="#c69464" />
+                    <view style="width: 150rpx; padding-left: 10rpx;">{{value.month}}月{{value.day}}日</view>
+                  </view>
+                
+                </van-cell>
+                <!-- 签到已结束 -->
+                <van-cell title-width="170rpx"
+                wx:elif="{{value.ifNow == 1}}" value="签到已结束，查看签到记录"
+                bind:click="showAttendance" 
+                data-year="{{value.year}}" data-month="{{value.month}}" data-day="{{value.day}}"
+                data-hour="{{value.hour}}" data-minute="{{value.minute}}" data-second="{{value.second}}"
+                center="true" class="blockContent" border="{{false}}">
+                  <view slot="title" style="display:flex">
+                    <van-icon wx:if="{{value.status == 'check' && !ifCY}}" name="passed" color="#5ba585" />
+                    <van-icon wx:if="{{value.status == 'leave' && !ifCY}}" name="records" color="#c69464" />
+                    <van-icon wx:if="{{value.status == 'miss' && !ifCY}}" name="warning-o" color="#b15373" />
+                    <view style="width: 150rpx; padding-left: 10rpx;">{{value.month}}月{{value.day}}日</view>
+                  </view>
+                </van-cell> 
+                <!-- 签到未开始 -->
+                <van-cell title-width="170rpx" 
+                wx:elif="{{value.ifNow == -1 && !ifCY}}" 
+                data-year="{{value.year}}" data-month="{{value.month}}"
+                data-day="{{value.day}}" data-time="{{value.time}}" data-hour="{{value.hour}}" 
+                data-minute="{{value.minute}}" data-second="{{value.second}}"
+                data-creator="{{value.creator}}" data-cw="{{value.cw}}"
+                data-status="{{value.status}}"
+                center="true" class="blockContent yet2Start" border="{{false}}">
+                  <view slot="title" style="display:flex">
+                    <van-icon wx:if="{{value.status == 'leave'}}" name="records" color="#c69464" />
+                    <view style="width: 150rpx; padding-left: 10rpx;">{{value.month}}月{{value.day}}日</view>
+                  </view>
+                  <view class="yet2Start" style="display: flex; justify-content: space-between;">
+                    <view>签到尚未开始</view>
+                    <view>|</view>
+                    <view>开始时间：{{value.time}}</view>
+                  </view>
+                  <!-- 普通团员显示 -->
+                  <view bindtap="showLeaveOrYet2Begin" data-year="{{value.year}}" data-month="{{value.month}}"
+                  data-day="{{value.day}}" data-time="{{value.time}}" data-status="{{value.status}}" 
+                  data-hour="{{value.hour}}" data-minute="{{value.minute}}" data-second="{{value.second}}"
+                  data-creator="{{value.creator}}"
+                  hidden="{{!hideAdmin || !value.showLeave}}" class="yet2Start" style="color: #c69464">点击请假</view>
+                  <!-- 管理员显示 -->
+                  <view bindtap="showLeaveOrYet2Begin" data-year="{{value.year}}" data-month="{{value.month}}"
+                  data-day="{{value.day}}" data-time="{{value.time}}" data-status="{{value.status}}" 
+                  data-hour="{{value.hour}}" data-minute="{{value.minute}}" data-second="{{value.second}}" 
+                  data-creator="{{value.creator}}"
+                  class="yet2Start" style="display:flex; justify-content: space-between;">
+                    <view hidden="{{hideAdmin}}">持续时间：{{value.duration}}分钟</view>
+                    <view hidden="{{hideAdmin || !value.showLeave}}" style="color: #c69464">点击请假</view>
+                  </view>
+                  <view wx:if="{{ role > 1 }}" class="secondRow">
+                    <view class="{{hideAdmin?'yet2Start vis':'yet2Start'}}">签到口令：{{value.cw}}</view>
+                    <van-button wx:if="{{role > 1}}" style="font-family: sans-serif;" icon="records" color="#c69464" size="mini"
+                    bind:click="showLeaveData" data-year="{{value.year}}" data-month="{{value.month}}"
+                    data-day="{{value.day}}" data-hour="{{value.hour}}" data-minute="{{value.minute}}" 
+                    data-second="{{value.second}}">显示请假记录</van-button>              
+                  </view>
+                  <view hidden="{{hideAdmin}}">
+                    <van-button icon="cross" color="#b15373" size="mini" style="font-family: sans-serif;"
+                    bind:click="showDeleteConfirm" data-cw="{{value.cw}}">删除本签到
+                    </van-button>
+                  </view>                
+                </van-cell>
+              </van-cell-group>
+            </van-cell-group>
+          </view>
+
+          
+
+        </scroll-view>
+
+        
+
+
+      </view>
+
+      <van-dialog
+        show="{{ showDeleteConfirm }}"
+        show-cancel-button="{{ true }}"
+        message='确认删除？'
+        confirm-button-color="#b15373"
+        bind:confirm='deleteAtt'
+        bind:cancel='cancelDelete'
+        custom-style="font-family: sans-serif;"
+      />
+      
+
+    
+    </view>
+  </van-tab>
+
+  <!-- Excel导出选项菜单 -->
+  <van-overlay show="{{ showMenu }}">
+    <view class="wrapper" bindtap="onClickHideMenu">
+      <view class="block" catchtap="noop">
+        <view style="height: 1vh"></view>
+        <van-cell-group class="vanBlock" inset border="{{false}}">
+          <van-cell class="blockContent" border="{{false}}" is-link
+          bind:click="chooseSem" >
+            <view style="display: flex; color: #646566; justify-content: space-between;">
+              <text>选择导出学期</text>
+              <text>{{ semsCount }}学期</text>
+            </view>
+          </van-cell>
+        </van-cell-group>
+        
+        <van-cell-group class="vanBlock" inset border="{{false}}">
+          <van-cell class="blockContent" border="{{false}}" title-width="90" 
+            style="display: flex; align-items: center;">
+            <view slot="title" style="width: 90px;">
+              <view style="color: #646566; display: flex; align-items: center; padding-top: 10px; padding-bottom: 10px;">导出文件名</view>
+            </view>
+            <van-field
+              model:value="{{ excelName }}"
+              border="{{ false }}"
+              input-align="right"
+            />
+          </van-cell>
+        </van-cell-group>
+
+        <view class="profile-btn" style="margin-top: 9vh">
+          <button bindtap="genExcel" style="background: #5ba585;">导出Excel</button>
+        </view>
+      </view>
+    </view>
+  </van-overlay>
+
+  <!-- 学期选项菜单 -->
+  <van-overlay wx:if="{{ showSems }}" show="{{ showSems }}" lock-scroll="{{ false }}">
+    <view class="wrapper" bindtap="onClickHideSems">
+      <view class="block" catchtap="noop">
+
+        <view style="height: 5vh; display: flex; justify-content: space-evenly; align-items: center; background-color: #F5F5F5;">
+          <van-checkbox value="{{ selectAll }}" checked-color="#646566" icon-size="15px" shape="square" bind:change="onSelectAll">
+            全选/全不选
+          </van-checkbox>
+        </view>
+
+        <view style="height: 25vh; overflow-y: scroll; border-radius: 0 0 10px 10px;">
+          <view>
+            <van-checkbox-group value="{{ resultSemsList }}" bind:change="onChangeSems">
+              <van-cell-group>
+                <van-cell
+                  wx:for="{{ semsList }}"
+                  wx:key="index"
+                  title="{{ item }}"
+                  value-class="value-class"
+                  custom-class="borderRound"
+                  clickable
+                  data-index="{{ index }}"
+                  bind:click="toggle"
+                >
+                  <van-checkbox
+                    checked-color="#5ba585"
+                    catch:tap="noop"
+                    class="checkboxes-{{ index }}"
+                    name="{{ item }}"
+                  />
+                </van-cell>
+              </van-cell-group>
+            </van-checkbox-group>
+          </view>
+
+        </view>
+      </view>
+    </view>
+  </van-overlay>
+
+  <!-- 乐谱tab -->
+  <van-tab title="乐谱" class="">
+    <scroll-view scroll-y="true" style="height: {{safeHscore}}px;">
+      <view style="padding: 40rpx 0 180rpx">
+        <van-cell-group title="本周曲目" border="{{false}}">
+          <van-cell-group inset
+          wx:key="item" wx:for="{{scoreThis}}"
+          wx:for-index="key" wx:for-item="value"
+          class="vanBlock" border="{{false}}">
+            <van-cell title-width="200px" value="点击打开PDF" 
+            bind:click="showPdf" data-score="{{value}}"
+            center="true" class="blockContent" border="{{false}}">
+              <view slot="title" style="color: #fc989f;">{{key}}</view>
+              <van-icon slot="icon" name="new" color="#fc989f" />
+              <van-icon wx:if="{{ role == 2 }}" slot="right-icon" name="cross" color="#b15373" size="20px" catchtap="cancelThis" data-scorename="{{ key }}"/>
+            </van-cell>
+          </van-cell-group>
+        </van-cell-group>
+        
+        <van-cell-group title="FDUC代表作" border="{{false}}">
+          <van-cell-group inset
+          wx:key="item" wx:for="{{scoreRep}}"
+          wx:for-index="key" wx:for-item="value"
+          class="vanBlock" border="{{false}}">
+            <van-cell title="{{key}}" title-width="200px" value="点击打开PDF" 
+            bind:click="showPdf" data-score="{{value}}"
+            center="true" icon="star" class="blockContent" border="{{false}}">
+              <van-icon wx:if="{{ role == 2 }}" slot="right-icon" name="success" color="#fc989f" size="20px" catchtap="setThis" data-scorename="{{ key }}"/>
+            </van-cell>
+          </van-cell-group>
+        </van-cell-group>
+
+        <van-cell-group title="中文歌曲" border="{{false}}">
+          <van-cell-group inset
+          wx:key="item" wx:for="{{scoreOpus}}"
+          wx:for-index="key" wx:for-item="value"
+          class="vanBlock" border="{{false}}">
+            <van-cell title="{{key}}" title-width="200px" value="点击打开PDF" 
+            bind:click="showPdf" data-score="{{value}}"
+            center="true" class="blockContent" border="{{false}}">
+              <van-icon wx:if="{{ role == 2 }}" slot="right-icon" name="success" color="#fc989f" size="20px" catchtap="setThis" data-scorename="{{ key }}"/>
+            </van-cell>
+          </van-cell-group>
+        </van-cell-group>
+
+        <van-cell-group title="外文歌曲" border="{{false}}">
+          <van-cell-group inset
+          wx:key="item" wx:for="{{scoreForeign}}"
+          wx:for-index="key" wx:for-item="value"
+          class="vanBlock" border="{{false}}">
+            <van-cell title="{{key}}" title-width="200px" value="点击打开PDF" 
+            bind:click="showPdf" data-score="{{value}}"
+            center="true" class="blockContent" border="{{false}}">
+              <van-icon wx:if="{{ role == 2 }}" slot="right-icon" name="success" color="#fc989f" size="20px" catchtap="setThis" data-scorename="{{ key }}"/>
+            </van-cell>
+          </van-cell-group>
+        </van-cell-group>
+
+      </view>
+    </scroll-view>
+
+    
+
+  </van-tab>
+
+</van-tabs>
+

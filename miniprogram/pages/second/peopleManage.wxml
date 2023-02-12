@@ -1,0 +1,171 @@
+<!--pages/second/peopleManage.wxml-->
+<view style="height: {{navH}}px; width: {{deviceW}}px; background-image: url({{navbarUrl}}); background-size: 100% 100%;">
+  <van-icon name="arrow-left" color="white" size="{{backHeight}}"
+  custom-style="padding: {{backPaddingTop}}px 0 0 12px" bind:click="back"/>
+</view>
+
+<van-dropdown-menu active-color="#b15373">
+  <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" bind:change="onChange1"/>
+  <van-dropdown-item value="{{ value2 }}" options="{{ option2 }}" bind:change="onChange2"/>
+</van-dropdown-menu>
+
+
+
+<scroll-view scroll-y="true" style="height: {{safeH}}px;">
+  <!-- <view class="profile-btn">
+    <button bindtap="chooseGenExcelOptions" style="background: #5ba585;">导出为Excel</button>
+  </view> -->
+  <van-cell-group wx:for="{{ peopleData }}" wx:for-index="key" wx:for-item="value" border="{{false}}">
+    <van-cell-group class="vanBlock" inset border="{{false}}">
+      <van-cell class="blockContent" border="{{false}}" 
+      bind:click="viewProfile" data-name="{{ value.name }}" data-stuid="{{ value.studentID }}" data-value1="{{value1}}" data-value2="{{value2}}">
+        <view slot="title" style="display: flex; justify-content: space-between;">
+          <view style="display: flex;">
+            <view style="font-size: 14px" class="index">{{ key + 1 }}.</view>
+            <van-tag wx:if="{{ value.role == 0 }}" color="#646566" class="register">{{value.register[0]}}{{value.register[1]}}</van-tag>
+            <van-tag wx:if="{{ value.role == 1 || value.role == 0.5}}" color="#b15373" class="register">{{value.register[0]}}{{value.register[1]}}</van-tag>
+            <van-tag wx:if="{{ value.role == 1.5 }}" color="#fc989f" class="register">{{value.register[0]}}{{value.register[1]}}</van-tag>
+            <van-tag wx:if="{{ value.role == 2 }}" color="#8daaf8" class="register">{{value.register[0]}}{{value.register[1]}}</van-tag>
+            <view style="padding-left: 10rpx; font-size: 14px">{{ value.name }}</view>
+          </view>
+          <view wx:if="{{value.inChoirTime[0] == '2022'}}" style="font-size: small; color: #BEBEBE">{{value.inChoirTime[0]}}{{value.inChoirTime[1]}}入团</view>
+          <view wx:else style="font-size: small; color: #646566">{{value.inChoirTime[0]}}{{value.inChoirTime[1]}}入团</view>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </van-cell-group>
+
+  
+
+  <van-overlay show="{{ showMenu }}">
+    <view class="wrapper" bindtap="onClickHideMenu">
+      <view class="block" catchtap="noop">
+        <view style="height: 3vh"></view>
+        <van-cell-group class="vanBlock" inset border="{{false}}">
+          <van-cell class="blockContent" border="{{false}}" is-link
+          bind:click="chooseHeads" >
+            <view style="display: flex; color: #646566; justify-content: space-between;">
+              <text>选择字段</text>
+              <text>{{ headsCount }}项</text>
+            </view>
+          </van-cell>
+        </van-cell-group>
+        <van-cell-group class="vanBlock" inset border="{{false}}">
+          <van-cell class="blockContent" border="{{false}}" is-link
+          bind:click="choosePersons" >
+            <view style="display: flex; color: #646566; justify-content: space-between;">
+              <text>选择导出人员</text>
+              <text>{{ personsCount }}人</text>
+            </view>
+          </van-cell>
+        </van-cell-group>
+        <van-cell-group class="vanBlock" inset border="{{false}}">
+          <van-cell class="blockContent" border="{{false}}" title-width="90" 
+            style="display: flex; align-items: center;">
+            <view slot="title" style="width: 90px;">
+              <view style="color: #646566; display: flex; align-items: center; padding-top: 10px; padding-bottom: 10px;">导出文件名</view>
+            </view>
+            <van-field
+              model:value="{{ excelName }}"
+              border="{{ false }}"
+              input-class="fileNameBloc"
+              input-align="right"
+            />
+          </van-cell>
+        </van-cell-group>
+        <view class="profile-btn" style="margin-top: 30vh">
+          <button bindtap="genExcel" style="background: #5ba585;">导出Excel</button>
+        </view>
+      </view>
+    </view>
+  </van-overlay>
+
+  <!-- 选择字段 -->
+  <van-overlay wx:if="{{ showHeads }}" show="{{ showHeads }}" lock-scroll="{{ false }}">
+    <view class="wrapper" bindtap="onClickHideHeads">
+      <view class="block" catchtap="noop">
+
+        <view style="height: 5vh; display: flex; justify-content: space-evenly; align-items: center; background-color: #F5F5F5;">
+          <van-checkbox value="{{ selectAll }}" checked-color="#646566" icon-size="15px" shape="square" bind:change="onSelectAll">
+            全选/全不选
+          </van-checkbox>
+        </view>
+
+        <view style="height: 55vh; overflow-y: scroll; border-radius: 0 0 10px 10px;">
+          <view>
+            <van-checkbox-group value="{{ resultHeadsList }}" bind:change="onChangeHeads">
+              <van-cell-group>
+                <van-cell
+                  wx:for="{{ headsList }}"
+                  wx:key="index"
+                  title="{{ item }}"
+                  value-class="value-class"
+                  clickable
+                  data-index="{{ index }}"
+                  bind:click="toggle"
+                >
+                  <van-checkbox
+                    checked-color="#5ba585"
+                    catch:tap="noop"
+                    class="checkboxes-{{ index }}"
+                    name="{{ item }}"
+                  />
+                </van-cell>
+              </van-cell-group>
+            </van-checkbox-group>
+          </view>
+
+        </view>
+      </view>
+    </view>
+  </van-overlay>
+
+  <!-- 选择人员 -->
+  <van-overlay wx:if="{{ showPersons }}" show="{{ showPersons }}" lock-scroll="{{ false }}">
+    <view class="wrapper" bindtap="onClickHidePersons">
+      <view class="block" catchtap="noop">
+
+        <view style="height: 5vh; display: flex; justify-content: space-evenly; align-items: center; background-color: #F5F5F5;">
+          <van-checkbox value="{{ selectAll }}" checked-color="#646566" icon-size="15px" shape="square" bind:change="onSelectAll">
+            全选/全不选
+          </van-checkbox>
+        </view>
+
+        <view style="height: 55vh; overflow-y: scroll; border-radius: 0 0 10px 10px;">
+
+          <van-checkbox-group value="{{ resultPersonsList }}" bind:change="onChangePersons">
+            <van-cell-group>
+              <van-cell
+                wx:for="{{ personsList }}"
+                wx:key="index"
+                title="{{ item }}"
+                value-class="value-class"
+                clickable
+                data-index="{{ index }}"
+                bind:click="toggle"
+              >
+                <van-checkbox
+                  checked-color="#5ba585"
+                  catch:tap="noop"
+                  class="checkboxes-{{ index }}"
+                  name="{{ item }}"
+                />
+              </van-cell>
+            </van-cell-group>
+          </van-checkbox-group>
+        
+        </view>
+      </view>
+    </view>
+  </van-overlay>
+
+  <view style="height: 5vh"></view>
+
+  <view class="add-wrap" hidden="{{ showMenu }}" bindtap="chooseGenExcelOptions">
+    <view class="iconBack">
+      <van-icon name="ellipsis" color="#5ba585" size="30px" />
+    </view>
+  </view>
+
+</scroll-view>
+

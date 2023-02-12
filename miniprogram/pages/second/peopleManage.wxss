@@ -1,0 +1,94 @@
+/* pages/second/peopleManage.wxss */
+.vanBlock, .blockContent {
+  --cell-group-inset-padding: 10rpx 30rpx 10rpx;
+  --cell-background-color: #F5F5F5;
+  --cell-border-color: #F5F5F5;
+  /* --cell-font-size: 32rpx */
+}
+
+.index {
+  width: 40rpx;
+  display: inline-flex;
+  justify-content: left;
+  color: #323233;
+}
+
+.register {
+  display: flex;
+  align-items: center;
+}
+
+.van-tag--default{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 16px;
+}
+
+.profile-btn button{
+  background: #9e063b;
+  color: #ffffff;
+  width: 50vw;
+  margin-top: 20rpx;
+  margin-bottom: 15rpx;
+  /* border-radius: 50rpx; */
+  font-size: 14px;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  z-index: 99999;
+  border-radius: 3%;
+}
+
+.block {
+  width: 80vw;
+  height: 60vh;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.value-class {
+  flex: none !important;
+}
+
+.borderRound {
+  border-radius: 0 0 3% 3%;
+}
+
+.iconBack {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 20%);
+}
+
+.add-wrap {
+  width: 66px;
+  height: 66px;
+  position: fixed;
+  right: 10px;
+  bottom: 75vh;
+  z-index: 9;
+  border-radius: 120rpx 0rpx 0 0rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 15rpx;
+  border: #ffffff;
+}
+
+/* .add-wrap van-icon {
+  width:50px;
+  height:50px;
+} */

@@ -1,0 +1,50 @@
+/* pages/home/fduc.wxss */
+@import "../template/template.wxss";
+
+.tabs {
+  background-image: linear-gradient(#7D0A32, #940839);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.img {
+  display: flex;
+  justify-content: center;
+}
+
+.introBwho {
+  padding: 10px 50px 5px;
+  /* margin-left: 10px;
+  margin-right: 10px; */
+} 
+
+.introBcharm {
+  padding: 10px 40px 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+} 
+
+.subtitle {
+  font-size: x-large;
+  padding-bottom: 10px;
+}
+
+.text{
+  text-align: justify;
+  text-indent: 2rem;
+  text-align-last: left;
+  font-size: 15px;
+  color: #363636;
+} 
+
+.charmText {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  font-size: small;
+  color: #646566;
+}

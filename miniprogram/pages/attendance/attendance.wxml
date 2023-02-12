@@ -1,0 +1,317 @@
+<view style="height: {{navH}}px; width: {{deviceW}}px; background-image: url({{navbarUrl}}); background-size: 100% 100%;">
+  <van-icon name="arrow-left" color="white" size="{{backHeight}}"
+  custom-style="padding: {{backPaddingTop}}px 0 0 12px" bind:click="back"/>
+</view>
+
+<!-- 请假文本框 -->
+<view wx:if="{{showLeave}}">
+  <view class="inputPosition">
+    <van-cell-group class="input" title="{{month}}月{{day}}日排练请假">
+        <van-field
+        model:value="{{ leaveReason }}"
+        center
+        clearable
+        type="textarea"
+        autosize="{{ {maxHeight: 200} }}"
+        label="请假理由"
+        placeholder="请输入请假理由"
+        border="{{ false }}"
+        use-button-slot>
+          <van-button color="#b15373" slot="button" size="small"
+          bind:click="submitReason" disabled="{{checked}}">
+            点击提交
+          </van-button>
+        </van-field>
+      </van-cell-group>
+      <view class="countdown">
+        <text decode="{{true}}">距离请假截止还有:&nbsp;</text>
+        <van-count-down time="{{ remain }}" format="HH时mm分ss秒"/>
+      </view>
+  </view> 
+</view>
+
+<!-- 签到文本框 -->
+<view wx:else>
+  <view wx:if="{{hideRanking}}">
+    <view class="inputPosition">
+      <van-cell-group class="input" title="{{month}}月{{day}}日排练签到">
+        <van-field
+        model:value="{{ codeWord }}"
+        center
+        clearable
+        label="签到口令"
+        placeholder="请输入签到口令"
+        border="{{ false }}"
+        use-button-slot>
+          <van-button color="#b15373" slot="button" size="small"
+          bind:click="checkCodeword" disabled="{{checked}}">
+            点击签到
+          </van-button>
+        </van-field>
+      </van-cell-group>
+      <view class="countdown">
+        <text decode="{{true}}">距离签到结束还有:&nbsp;</text>
+        <van-count-down time="{{ countDown }}" format="HH时mm分ss秒"/>
+      </view>
+
+      <view wx:if="{{ifCreator}}" class="code">
+        <text decode="{{true}}">签到口令(仅创建者可见):&nbsp;{{rehearsal[0].cw}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 签到结果展示 -->
+  <view wx:else>
+    <view wx:if="{{!ifCY}}" style="color:{{checkedIconColor}}; padding: 32rpx 32rpx 0; font-size: large;">
+      <van-icon name="{{checkedIcon}}" color="{{checkedIconColor}}" />
+      {{month}}月{{day}}日排练：{{checkedMsg}}
+      <view style="color: #646566; padding: 8rpx 44rpx 0; font-size: small;">
+        <text style="font-weight: bold; color:{{checkedIconColor}};">签到时段：</text> 
+        <text>{{startTime}}-{{endTime}}</text>
+      </view>
+      <view wx:if="{{!showRecord}}" style="color: #646566; padding: 8rpx 44rpx 0; font-size: small;">
+        <view style="word-break: break-all;">
+          <text style="font-weight: bold; color:{{checkedIconColor}};">请假理由：</text> 
+          <text>{{leaveReason}}</text> 
+        </view>
+        <view style="color: #646566; padding: 8rpx 0 0; font-size: small;">
+          <text style="font-weight: bold; color:{{checkedIconColor}};">请假时间：</text> 
+          <text>{{leaveTime}}</text> 
+        </view>
+        <van-button color="#b15373" slot="button" size="small" wx:if="{{showRevoke}}" style="font-family: sans-serif;"
+          bind:click="revokeLeave" custom-class="revokeButton">
+            撤销
+        </van-button>
+      </view>
+    </view>
+    
+    <!-- start以后展示签到记录 -->
+    <view wx:if="{{showRecord}}">
+      <van-cell-group title="签到记录">
+        <view class="sidebarPage">
+          <van-sidebar active-key="{{ activeKey }}" bind:change="onChange"
+          custom-class="sidebar">
+            <!-- 全部sidebar -->
+            <van-sidebar-item title="全部" badge="{{rehearsal[0].list.length}}" disabled="{{!!role}}"/>
+            <!-- 女高sidebar -->
+            <van-sidebar-item title="女高" badge="{{rankingS.length}}" disabled="{{!!role}}"/>
+            <!-- 女中sidebar -->
+            <van-sidebar-item title="女中" badge="{{rankingA.length}}" disabled="{{!!role}}"/>
+            <!-- 男高sidebar -->
+            <van-sidebar-item title="男高" badge="{{rankingT.length}}" disabled="{{!!role}}"/>
+            <!-- 男低sidebar -->
+            <van-sidebar-item title="男低" badge="{{rankingB.length}}" disabled="{{!!role}}"/>
+            <!-- 请假sidebar -->
+            <van-sidebar-item title="请假" badge="{{leave.length}}"/>
+
+          </van-sidebar>
+
+          <!-- 全部内容 -->      
+          <scroll-view wx:if="{{activeKey == 0}}" 
+          scroll-y="true" style="height: {{safeH}}px;">
+            <view style="padding: 20rpx 0 180rpx">
+              <van-cell-group inset
+                wx:key="item" wx:for="{{rehearsal[0].list}}"
+                wx:for-index="key" wx:for-item="value"
+                class="vanBlock">
+                <van-cell title-width="0"
+                center="true" class="blockContent">
+                  <view class="left">
+                    <view class="index">{{key + 1}}.</view>
+                    <van-tag wx:if="{{userName == value[3]}}" color="#5ba585" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <van-tag wx:else color="#b15373" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <view wx:if="{{userName == value[3]}}" style="font-weight: bold; color: {{checkedIconColor}}" 
+                    class="name">{{value[3]}}</view>
+                    <view wx:else style="font-weight: normal;" class="name">{{value[3]}}</view>
+                  </view>
+                  <!-- <van-tag color="#b15373" plain class="time">{{ value[4] }}</van-tag> -->
+                  <view text-color="#b15373" class="time">{{ value[4] }}</view>
+                </van-cell>
+              </van-cell-group>
+            </view>
+          </scroll-view>
+          <!-- 女高内容 -->
+          <scroll-view wx:elif="{{activeKey == 1}}" 
+          scroll-y="true" style="height: {{safeH}}px;">
+            <view style="padding: 20rpx 0 180rpx">
+              <van-cell-group inset
+                wx:key="item" wx:for="{{rankingS}}"
+                wx:for-index="key" wx:for-item="value"
+                class="vanBlock">
+                <van-cell title-width="0"
+                center="true" class="blockContent">
+                  <view class="left">
+                    <view class="index">{{key + 1}}.</view>
+                    <van-tag wx:if="{{userName == value[3]}}" color="#5ba585" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <van-tag wx:else color="#b15373" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <view wx:if="{{userName == value[3]}}" style="font-weight: bold; color: #5ba585" 
+                    class="name">{{value[3]}}</view>
+                    <view wx:else style="font-weight: normal;" class="name">{{value[3]}}</view>
+                  </view>
+                  <!-- <van-tag color="#b15373" plain class="time">{{ value[4] }}</van-tag> -->
+                  <view text-color="#b15373" class="time">{{ value[4] }}</view>
+                </van-cell>
+              </van-cell-group>
+            </view>
+          </scroll-view>
+          <!-- 女中内容 -->
+          <scroll-view wx:elif="{{activeKey == 2}}" 
+          scroll-y="true" style="height: {{safeH}}px;">
+            <view style="padding: 20rpx 0 180rpx">
+              <van-cell-group inset
+                wx:key="item" wx:for="{{rankingA}}"
+                wx:for-index="key" wx:for-item="value"
+                class="vanBlock">
+                <van-cell title-width="0"
+                center="true" class="blockContent">
+                  <view class="left">
+                    <view class="index">{{key + 1}}.</view>
+                    <van-tag wx:if="{{userName == value[3]}}" color="#5ba585" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <van-tag wx:else color="#b15373" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <view wx:if="{{userName == value[3]}}" style="font-weight: bold; color: #5ba585" 
+                    class="name">{{value[3]}}</view>
+                    <view wx:else style="font-weight: normal;" class="name">{{value[3]}}</view>
+                  </view>
+                  <!-- <van-tag color="#b15373" plain class="time">{{ value[4] }}</van-tag> -->
+                  <view text-color="#b15373" class="time">{{ value[4] }}</view>
+                </van-cell>
+              </van-cell-group>
+            </view>
+          </scroll-view>
+          <!-- 男高内容 -->
+          <scroll-view wx:elif="{{activeKey == 3}}" 
+          scroll-y="true" style="height: {{safeH}}px;">
+            <view style="padding: 20rpx 0 180rpx">
+              <van-cell-group inset
+                wx:key="item" wx:for="{{rankingT}}"
+                wx:for-index="key" wx:for-item="value"
+                class="vanBlock">
+                <van-cell title-width="0"
+                center="true" class="blockContent">
+                  <view class="left">
+                    <view class="index">{{key + 1}}.</view>
+                    <van-tag wx:if="{{userName == value[3]}}" color="#5ba585" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <van-tag wx:else color="#b15373" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <view wx:if="{{userName == value[3]}}" style="font-weight: bold; color: #5ba585" 
+                    class="name">{{value[3]}}</view>
+                    <view wx:else style="font-weight: normal;" class="name">{{value[3]}}</view>
+                  </view>
+                  <!-- <van-tag color="#b15373" plain class="time">{{ value[4] }}</van-tag> -->
+                  <view text-color="#b15373" class="time">{{ value[4] }}</view>
+                </van-cell>
+              </van-cell-group>
+            </view>
+          </scroll-view>
+          <!-- 男低内容 -->
+          <scroll-view wx:elif="{{activeKey == 4}}" 
+          scroll-y="true" style="height: {{safeH}}px;">
+            <view style="padding: 20rpx 0 180rpx">
+              <van-cell-group inset
+                wx:key="item" wx:for="{{rankingB}}"
+                wx:for-index="key" wx:for-item="value"
+                class="vanBlock">
+                <van-cell title-width="0"
+                center="true" class="blockContent">
+                  <view class="left">
+                    <view class="index">{{key + 1}}.</view>
+                    <van-tag wx:if="{{userName == value[3]}}" color="#5ba585" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <van-tag wx:else color="#b15373" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <view wx:if="{{userName == value[3]}}" style="font-weight: bold; color: #5ba585" 
+                    class="name">{{value[3]}}</view>
+                    <view wx:else style="font-weight: normal;" class="name">{{value[3]}}</view>
+                  </view>
+                  <!-- <van-tag color="#b15373" plain class="time">{{ value[4] }}</van-tag> -->
+                  <view text-color="#b15373" class="time">{{ value[4] }}</view>
+                </van-cell>
+              </van-cell-group>
+            </view>
+          </scroll-view>
+          <!-- 请假内容 -->
+          <scroll-view wx:elif="{{activeKey == 5}}" 
+          scroll-y="true" style="height: {{safeH}}px;">
+            <view style="padding: 20rpx 0 180rpx">
+              <van-cell-group inset
+                wx:key="item" wx:for="{{leave}}"
+                wx:for-index="key" wx:for-item="value">
+                <van-cell title-width="0" bind:click="showReason" data-reason="{{value[4]}}" data-name="{{value[3]}}"
+                center="true">
+                  <view class="left">
+                    <view class="index">{{key + 1}}.</view>
+                    <van-tag wx:if="{{userName == value[3]}}" color="#c69464" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <van-tag wx:else color="#b15373" 
+                    class="register">{{value[1]}}{{value[2]}}</van-tag>
+                    <view wx:if="{{userName == value[3]}}" style="font-weight: bold; color: #c69464" 
+                    class="name">{{value[3]}}</view>
+                    <view wx:else style="font-weight: normal;" class="name">{{value[3]}}</view>
+                  </view>
+                  <!-- <van-tag color="#b15373" plain class="time">{{ value[4] }}</van-tag> -->
+                  <view text-color="#b15373" style="width: 200rpx;" class="time">{{ value[5] }}</view>
+                </van-cell>
+              </van-cell-group>
+            </view>
+          </scroll-view>
+          <van-action-sheet show="{{ showLeaveReason }}" title="{{ curLeaveName }}" bind:close="onCloseLeaveReason">
+            <view style="color: #646566; padding: 8rpx 44rpx 0; font-size: small;">{{leaveReason}}</view>
+          </van-action-sheet>
+        </view>
+      </van-cell-group>
+    </view>
+
+    <!-- 生成Excel-选项 -->
+    <view wx:if="{{ globalRole == 2 }}">
+      <view class="add-wrap" wx:if="{{ activeKey == 0 | activeKey == 5 }}" hidden="{{ showMenu }}" bindtap="chooseGenExcelOptions">
+        <view class="iconBack">
+          <van-icon name="ellipsis" color="#5ba585" size="30px" />
+        </view>
+      </view>
+
+      <van-overlay show="{{ showMenu }}">
+      <view class="wrapper" bindtap="onClickHideMenu">
+        <view class="block" catchtap="noop">
+          <view style="height: 1vh"></view>
+          <van-cell-group class="vanBlock" inset border="{{false}}">
+            <van-cell class="blockContent" border="{{false}}" is-link
+            bind:click="chooseSem" >
+              <view style="display: flex; color: #646566; justify-content: space-between;">
+                <text>选择导出学期</text>
+                <text>{{ semsCount }}学期</text>
+              </view>
+            </van-cell>
+          </van-cell-group>
+          
+          <van-cell-group class="vanBlock" inset border="{{false}}">
+            <van-cell class="blockContent" border="{{false}}" title-width="90" 
+              style="display: flex; align-items: center;">
+              <view slot="title" style="width: 90px;">
+                <view style="color: #646566; display: flex; align-items: center; padding-top: 10px; padding-bottom: 10px;">导出文件名</view>
+              </view>
+              <van-field
+                model:value="{{ excelName }}"
+                border="{{ false }}"
+                input-align="right"
+              />
+            </van-cell>
+          </van-cell-group>
+
+          <view class="profile-btn" style="margin-top: 9vh">
+            <button bindtap="genExcel" style="background: #5ba585;">导出Excel</button>
+          </view>
+        </view>
+      </view>
+    </van-overlay>
+  </view>
+
+  </view>
+
+</view>

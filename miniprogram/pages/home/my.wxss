@@ -1,0 +1,44 @@
+/* pages/home/my.wxss */
+
+/* 游客页 */
+.options { 
+  display: flex; 
+  flex-direction: column; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  align-items: center;
+}
+
+.optionBlock {
+  padding: 12.5vh 0;
+  margin: 2vw 3.8vw 2vw;
+  width: 92.4vw;
+  background-color: #F5F5F5;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.optionTitle {
+  height: 33px;
+  display: inline; 
+  font-size: x-large;
+}
+
+/* 团员页 */
+/* .register {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-weight: bold;
+} */
+
+
+.vanBlock, .blockContent {
+  --cell-group-inset-padding: 10rpx 30rpx 10rpx;
+  --cell-background-color: #F5F5F5;
+  --cell-border-color: #F5F5F5;
+  /* --cell-font-size: 32rpx */
+}

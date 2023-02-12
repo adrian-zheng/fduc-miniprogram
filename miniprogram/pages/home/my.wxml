@@ -1,0 +1,114 @@
+<!--pages/home/my.wxml-->
+<image style="display: block; height: {{navH}}px; width: {{deviceW}}px;" mode="scaleToFill"
+src="{{navbarUrl}}"></image>
+
+<!-- 游客显示：团员登录 -->
+<view wx:if="{{role == 0 || role == undefined}}">
+  <view style="height: {{safeH}}px;" class="options">
+    <navigator class="optionBlock" url="{{uDlength==1?'../../pages/second/login':''}}" open-type="navigate">
+      <view style="display: flex; flex-direction: row;">
+        <van-icon name="smile-o" color="#8daaf8" size="33px"/>
+        <text decode="{{true}}">&nbsp;</text>
+        <text class="optionTitle" style="background-image: linear-gradient(0deg, #dfe7fd 50%, #F5F5F5 50.0001%, #F5F5F5);">团员登录</text>
+      </view>
+      <view wx:if="{{uDlength > 1 || showDialog}}" style="padding-top: 6px; color: #8daaf8">信息已提交，审核中</view>
+      <view wx:if="{{uDlength > 1 || showDialog}}" style="color: #8daaf8">(姓名：{{uD.name}}）</view>
+    </navigator>
+
+    <!-- <navigator class="optionBlock" url="{{udlength==1?'../../pages/second/join':''}}" open-type="navigate">
+      <view style="display: flex; flex-direction: row;">
+        <van-icon name="new-o" color="#fc989f" size="33px"/>
+        <text decode="{{true}}">&nbsp;</text>  
+        <text class="optionTitle" style="background-image: linear-gradient(0deg, #fde2e4 50%, #F5F5F5 50.0001%, #F5F5F5);">招新报名</text>
+      </view>
+      <text style="padding-top: 6px; color: #fc989f">2022秋</text>
+    </navigator> -->
+  </view>
+</view>
+
+<!-- 团员显示：个人信息展示&修改、日常反馈 -->
+<view wx:else style="display: flex; flex-direction: column;">
+  <!-- 个人信息 -->
+  <view style="display: flex; justify-content: space-between; padding: 2vw 3.8vw 2vw; margin-top: 5vh; margin-bottom: 2vh;"
+    bindtap="viewProfile"
+  >
+    <view style="display: flex; flex-direction: column;">
+      <!-- <van-tag color="#9408394d" class="register">{{uD.register[0]}}{{uD.register[1]}}</van-tag> -->
+      <view style="color: #9408394d; font-weight: bold; font-size: large;">{{uD.register[0]}}{{uD.register[1]}}</view>
+      <view>
+        <text style="font-size: xx-large; font-weight: bold; margin-right: 1vw">{{uD.name}}</text>
+        <van-icon name="arrow" color="#9408394d" size="20px"/>
+      </view>
+    </view>
+    <van-image
+      wx:if="{{ !ifCY }}"
+      round width="80" height="80"
+      fit="cover" src="{{uD.photo}}"
+    />
+  </view>
+  
+
+  <!-- 通用功能 -->
+  <van-cell-group border="{{false}}">
+    <van-cell-group wx:if="{{ !ifCY }}" class="vanBlock" inset border="{{false}}">
+      <van-cell class="blockContent" border="{{false}}"> 
+        <view slot="title" style="display: flex; justify-content: space-between;">
+          <view style="display:flex">
+            <van-icon name="music-o" color="#9408394d" size="20px"/>
+            <view style="display: flex; align-items: center; padding-left: 10rpx;">
+              <text>本学期参与排练数</text> 
+            </view>
+          </view>
+          <van-circle
+            style="display: flex; align-items: center;"
+            value="{{ check / all * 100 }}"
+            layer-color="#f4e6eb"
+            color="#940839"
+            text="{{ check }}/{{ all }}"
+            size="60"
+            speed="200"
+          />
+        </view>
+      </van-cell>
+    </van-cell-group>
+
+    <van-cell-group class="vanBlock" inset border="{{false}}">
+      <van-cell class="blockContent" border="{{false}}" bind:click="onIssue">
+        <view slot="title" style="display:flex">
+          <van-icon name="question-o" color="#9408394d" size="20px"/>
+          <view style="padding-left: 10rpx; font-size: 14px">问题反馈</view>
+        </view>
+      </van-cell>
+    </van-cell-group> 
+  </van-cell-group>
+
+  <!-- 管理员功能 role = 2 -->
+  <!-- <view > -->
+  <van-cell-group wx:if="{{ role == 2 }}" title="管理员功能" border="{{false}}">
+    <van-cell-group class="vanBlock" inset border="{{false}}">
+      <van-cell class="blockContent" border="{{false}}" bind:click="managePeople">
+        <view slot="title" style="display:flex">
+          <van-icon name="friends-o" color="#8daaf8" size="20px"/>
+          <view style="padding-left: 10rpx; font-size: 14px">团员管理</view>
+        </view>
+      </van-cell>
+    </van-cell-group>
+
+    <!-- <van-cell-group class="vanBlock" inset border="{{false}}" bind:click="viewAttendance">
+      <van-cell class="blockContent" border="{{false}}">
+        <view slot="title" style="display:flex">
+          <van-icon name="todo-list-o" color="#8daaf8" size="20px"/>
+          <view style="padding-left: 10rpx; font-size: 14px">考勤数据查看</view>
+        </view>
+      </van-cell>
+    </van-cell-group> -->
+
+
+  </van-cell-group>
+  <!-- </view> -->
+
+  <!-- <navigator class="optionBlock" url="../../pages/form/form" open-type="navigate">团员登录</navigator>
+  <navigator class="optionBlock" url="../../pages/second/join" open-type="navigate">招新报名</navigator> -->
+
+</view>
+

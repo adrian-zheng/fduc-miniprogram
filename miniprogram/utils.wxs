@@ -1,0 +1,17 @@
+var subStr = function(val, start, stop) {
+  if (val) {
+    return Number(val.substring(start, stop))
+  } else {
+    return ''
+  }
+}
+
+var getCurYear = function() {
+  return Number(getDate().getFullYear())
+}
+
+
+module.exports = {
+  subStr: subStr,
+  getCurYear: getCurYear
+}

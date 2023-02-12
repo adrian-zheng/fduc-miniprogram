@@ -1,0 +1,72 @@
+<wxs src="../../utils.wxs" module="tools" />
+
+<template name="songBlock">
+  <view class="introblock">
+    <view class="titleBlock">
+      <text class="songTitle">{{songTitle}}</text>
+      <view>
+        <view class="credits">
+          <text class="creditsTitle">\n曲</text>
+          <text decode="{{true}}">&emsp;{{songAuthor}}</text>
+        </view>
+        <view class="credits">
+          <text class="creditsTitle">\n词</text>
+          <text decode="{{true}}">&emsp;{{lyricsAuthor}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="songText">
+      <text decode="{{true}}" user-select="true">
+        <text class="dscrTitle">作品简介</text>&emsp;{{dscrText}}
+      </text>
+    </view>
+    <view class="img">
+      <image mode="widthFix" style="border-radius: 5px" bindtap="goBilibili" data-avid="{{avid}}"
+      src="{{picFilePath}}"/>
+    </view>
+    <view class="play">(点击图片跳转至Bilibili播放)</view>
+  </view>
+</template>
+
+<template name="peopleTiles">
+  <view class="reg-name">
+    <view class="reg-bloc">
+      <text decode="{{true}}" class="register">&nbsp;{{register[0]}}{{register[1]}}</text>
+      <view class="inChoir">{{inChoirTime[0]}}{{inChoirTime[1]}}入团</view>
+    </view>
+    <view style="display: flex; flex-direction: column;">
+      <view class="name">{{name}}</view>
+      <view class="position">{{position}}</view>
+    </view>
+  </view>
+  <van-divider borderColor="#9408392d" customStyle="margin: 0.5vh 15vw 0 0" hairline/>
+  <view class="info">
+    <view style="text-align: right;">{{yearIn}}级{{degree}}生</view>
+    <view style="text-align: right;">{{college}}</view> 
+  </view>
+  <view>
+    <image mode="aspectFill" class="photo" bindtap="onPreviewImage" data-url="{{photo}}"
+    src="{{photo}}"/>
+  </view> 
+</template>
+
+<template name="birthdayTiles">
+  <view class="reg-name">
+    <view class="reg-bloc">
+      <text decode="{{true}}" class="register">&nbsp;{{register[0]}}{{register[1]}}</text>
+      <view class="inChoir">{{inChoirTime[0]}}{{inChoirTime[1]}}入团</view>
+    </view>
+    <view class="name">{{name}}</view>
+  </view>
+  <van-divider borderColor="#9408392d" customStyle="margin: 0.5vh 15vw 0 0" hairline/>
+  <view class="birthday">
+    <view>{{birthdayString}}</view>
+    <!-- <view style="text-align: center;">{{curYear - tools.subStr(birthdayString, 0, 4)}}岁</view>  -->
+    <view>{{tools.getCurYear() - tools.subStr(birthdayString, 0, 4)}}岁</view> 
+
+  </view>
+  <view>
+    <image mode="aspectFill" class="photo" 
+    src="{{photo}}"/>
+  </view> 
+</template>

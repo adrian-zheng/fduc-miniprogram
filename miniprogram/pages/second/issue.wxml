@@ -1,0 +1,97 @@
+<!--pages/second/issue.wxml-->
+<view style="height: {{navH}}px; width: {{deviceW}}px; background-image: url({{navbarUrl}}); background-size: 100% 100%;">
+  <van-icon name="arrow-left" color="white" size="{{backHeight}}"
+  custom-style="padding: {{backPaddingTop}}px 0 0 12px" bind:click="back"/>
+</view>
+
+
+<view style="height: {{safeH}}px; display: flex; flex-direction: column;">
+  
+  <!-- 全员提交反馈 -->
+  <view>
+    <form bindsubmit="submitIssue">
+      <van-cell-group title="问题反馈（提交后骨干可见）" border="{{ false }}">
+
+        <!-- 问题反馈输入框 -->
+        <van-field
+          label="内容"
+          type="textarea"
+          autosize
+          model:value="{{ issueContent }}"
+          placeholder="想唱什么歌？对排练有什么建议？"
+          input-align="right"
+        />
+
+        <!-- 提交按钮 -->
+        <view class="profile-btn">
+          <button formType="submit" disabled="{{disabled}}">提交</button>
+        </view>
+        
+      </van-cell-group>
+    </form>
+  </view>
+
+  <view wx:if="{{ role > 1 }}" style="overflow-y: hidden;">
+    <van-divider  hairline contentPosition="center" customStyle="margin-bottom: 0">骨干显示</van-divider>
+    <view wx:if="{{ ifAllEmpty }}" class="emptyFeedback">暂无反馈，有问题记得来反馈哦～</view>
+    <scroll-view wx:else scroll-y="true" style="height: 100%;">
+        
+      <view wx:for="{{ finalAD }}" wx:key="item" wx:for-index="key" wx:for-item="value">
+        <van-cell-group title="{{ key }}" border="{{false}}">
+          <van-cell-group inset
+          wx:for="{{ value }}" wx:key="item2"
+          wx:for-index="key2" wx:for-item="value2"
+          class="vanBlock" border="{{false}}">
+            
+            <van-cell title-width="170rpx"
+            center="true" class="blockContent" border="{{false}}">
+              <view slot="title" style="display:flex">
+                <view style="width: 25vw; font-weight: bold;">{{value2[2]}}-{{value2[1]}}</view>
+              </view>
+              <view style="word-wrap: break-word;">{{ value2[3] }}</view>
+            
+            </van-cell>            
+          </van-cell-group>
+        </van-cell-group>
+      </view>
+      <view style="height: 5vh;"></view>
+
+    </scroll-view>
+  </view>
+
+
+  
+  
+  <view wx:if="{{ role == 1 }}" style="overflow-y: hidden;">
+    <van-divider hairline contentPosition="center" customStyle="margin-bottom: 0">已提交反馈</van-divider>
+    <view wx:if="{{ ifEmpty }}" class="emptyFeedback">暂无反馈，有问题记得来反馈哦～</view>
+    <scroll-view wx:else scroll-y="true" style="height: 100%;">
+        
+        <view wx:for="{{ memberAD }}" wx:key="item" wx:for-index="key" wx:for-item="value">
+          <van-cell-group title="{{ key }}" border="{{false}}">
+            <van-cell-group inset
+            wx:for="{{ value }}" wx:key="item2"
+            wx:for-index="key2" wx:for-item="value2"
+            class="vanBlock" border="{{false}}">
+              
+              <van-cell title-width="170rpx"
+              center="true" class="blockContent" border="{{false}}">
+                <view slot="title" style="display:flex">
+                  <view style="width: 25vw; font-weight: bold;">{{value2[2]}}-{{value2[1]}}</view>
+                </view>
+                <view style="word-wrap: break-word;">{{ value2[3] }}</view>
+              
+              </van-cell>            
+            </van-cell-group>
+          </van-cell-group>
+        </view>
+        <view style="height: 5vh;"></view>
+
+      </scroll-view>
+  </view>
+
+  
+  
+
+
+</view>

@@ -1,0 +1,12 @@
+/* page {
+  --background-color: #646566;
+  --button-border-radius: 20rpx;
+  --button-default-color: #f2f3f5;
+  --button-default-background-color: #9e063b;
+  --button-default-border-color: #9e063b;
+  --button-primary-color: #f2f3f5;
+  --button-primary-background-color: #9e063b;
+  --button-primary-border-color: #9e063b;
+  --toast-max-width: 100px;
+  --toast-background-color: pink;
+} */

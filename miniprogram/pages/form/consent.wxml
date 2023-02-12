@@ -1,0 +1,49 @@
+<!--pages/form/consent.wxml-->
+<view style="height: {{navH}}px; width: {{deviceW}}px; background-image: url({{navbarUrl}}); background-size: 100% 100%;">
+  <van-icon name="arrow-left" color="white" size="{{backHeight}}"
+  custom-style="padding: {{backPaddingTop}}px 0 0 12px" bind:click="back"/>
+</view>
+
+<scroll-view  scroll-y="true" style="height: {{safeH}}px;">
+  <view class="all">
+    <view>
+    本声明是“FDUC+”小程序开发者（以下简称“开发者”）为处理您的个人信息而制定。
+    </view>
+
+    <view class="subtitle">一、可能收集的有关个人身份的信息</view>
+
+    <text class="text" user-select="true" decode="{{true}}">当您使用“FDUC+”小程序时，我们可能收集和汇总或要求您提供的信息包括：个人信息（姓名、性别、出生日期、身份证号、照片）；学业信息（学号、学历阶段、院系、专业、所在校区、入学年份、毕业年份）；联系方式（手机号、微信号）、合唱团信息（声部、入团时间）；设备信息（包括设备型号、设备MAC地址、操作系统类型、设备设置）；软件列表唯一设备识别码（如IMEl/androidID/IDFA/OPENUDID/GUID、SIM卡IMSI信息等在内的描述个人常用设备基本情况的信息）。
+    </text>
+
+
+    <view class="subtitle">二、信息的存储规则</view>
+    <text class="text" user-select="true" decode="{{true}}">除法律或有法律赋予权限的政府部门要求或事先得到用户明确授权等原因外，开发者保证不对外公开或向第三方透露用户个人隐私信息，或用户在使用服务时存储的非公开内容。
+    </text>
+
+
+    <view class="subtitle">三、信息的使用规则</view>
+    <text class="text" user-select="true" decode="{{true}}">上述信息的用途包括：\n1）复旦大学学生合唱团日常活动信息收集；\n2）合唱团内部信息展示（仅显示姓名、声部、入团时间、院系、年级、上传的照片等）。\n开发者将会严格在以上列出的用途范围内使用收集的信息。\n如开发者使用您的信息超出本指引目的或合理范围，开发者必须在变更使用目的或范围前，再次以小程序内文字方式告知并征得您的明示同意。
+    </text>
+
+
+    <view class="subtitle">四、信息对外提供</view>
+    <text class="text" user-select="true" decode="{{true}}">开发者承诺，不会主动共享或转让您的信息至任何第三方，如存在确需共享或转让时，开发者应当直接征得或确认第三方征得您的单独同意。
+    开发者承诺，不会对外公开披露您的信息，如必须公开披露时，开发者应当向您告知公开披露的目的、披露信息的类型及可能涉及的信息，并征得您的单独同意。
+    </text>
+
+    <view style="padding-top: 20px;">
+      <text class="text" user-select="true" decode="{{true}}">若您认为开发者未遵守上述约定，或有其他的投诉建议、或未成年人个人信息保护相关问题，可通过以下方式与开发者联系；或者向微信进行投诉。
+      \n- 开发者邮箱: tellyzheng@126.com
+      </text>
+    </view>
+
+    <view style="padding-top: 40px; padding-bottom: 40px;">
+      <text decode="{{true}}">更新日期：2022年8月26日\n </text>
+      <text>生效日期：2022年6月26日</text> 
+    </view>
+
+
+
+  </view>
+</scroll-view>
+

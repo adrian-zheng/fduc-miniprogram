@@ -1,0 +1,60 @@
+<!--pages/home/people.wxml-->
+<import src="../template/template.wxml" />
+<!-- <wxs></wxs> -->
+
+<image style="display:block; height: {{navH}}px; width: {{deviceW}}px;" mode="scaleToFill"
+src="{{navbarUrl}}"></image>
+
+<van-tabs animated color='#ffffff' nav-class="tabs" swipeable bind:click="onClick"
+title-inactive-color="#c4c4c4" title-active-color="white">
+  <van-tab title="S" class="intro">
+    <scroll-view scroll-y="true" style="height: {{safeH}}px;">
+      <view style="display: flex; flex-wrap: wrap; gap: 2vw; margin: 2vw;">
+        <view class="out" wx:for="{{sData}}" wx:key="item" wx:for-item="value">
+          <template is="peopleTiles" data = "{{...value}}"/>
+        </view>
+      </view>
+    </scroll-view>
+  </van-tab>
+
+  <van-tab title="A" class="intro">
+    <scroll-view scroll-y="true" style="height: {{safeH}}px;">
+      <view style="display: flex; flex-wrap: wrap; gap: 2vw; margin: 2vw;">
+        <view class="out" wx:for="{{aData}}" wx:key="item" wx:for-item="value">
+          <template is="peopleTiles" data = "{{...value}}"/>
+        </view>
+      </view>
+    </scroll-view>
+  </van-tab>
+
+  <van-tab title="T" class="intro">
+    <scroll-view scroll-y="true" style="height: {{safeH}}px;">
+      <view style="display: flex; flex-wrap: wrap; gap: 2vw; margin: 2vw;">
+        <view class="out" wx:for="{{tData}}" wx:key="item" wx:for-item="value">
+          <template is="peopleTiles" data = "{{...value}}"/>
+        </view>
+      </view>
+    </scroll-view>
+  </van-tab>
+
+  <van-tab title="B" class="intro">
+    <scroll-view scroll-y="true" style="height: {{safeH}}px;">
+      <view style="display: flex; flex-wrap: wrap; gap: 2vw; margin: 2vw;">
+        <view class="out" wx:for="{{bData}}" wx:key="item" wx:for-item="value">
+          <template is="peopleTiles" data = "{{...value}}"/>
+        </view>
+      </view>
+    </scroll-view>
+  </van-tab>
+
+  <van-tab title="本月寿星" class="intro">
+    <scroll-view scroll-y="true" style="height: {{safeH}}px;">
+      <view style="display: flex; flex-wrap: wrap; gap: 2vw; margin: 2vw;">
+        <view class="out" wx:for="{{birthdays}}" wx:key="item" wx:for-item="value">
+          <template is="birthdayTiles" data = "{{...value}}"/>
+        </view>
+      </view>
+    </scroll-view>
+  </van-tab>
+
+</van-tabs>

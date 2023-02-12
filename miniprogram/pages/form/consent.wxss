@@ -1,0 +1,17 @@
+/* pages/form/consent.wxss */
+.all {
+  margin: 10px 25px 10px;
+}
+
+.subtitle {
+  padding-top: 20px;
+  font-weight: bold;
+  font-size: 16px
+}
+
+.text {
+  text-align: justify;
+  text-align-last: left;
+  font-size: 14px;
+  color: #646566;
+}

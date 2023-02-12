@@ -1,0 +1,157 @@
+/* pages/attendance/attendance.wxss */
+.inputPosition {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 70vh;
+}
+
+.sidebarPage {
+  display: flex
+}
+
+.van-info {
+  --info-background-color: #b15373
+}
+
+.sidebar {
+  --sidebar-selected-border-color: #b15373
+}
+
+.van-cell-group__title {
+  --cell-group-title-padding: 36rpx 32rpx 16rpx
+}
+
+.van-cell__value {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input .van-cell__value {
+  display: inline;
+}
+
+.countdown {
+  display: flex;
+  justify-content: left;
+  color: #646566;
+  font-size: smaller;
+  padding: 20rpx 32rpx 0
+}
+
+.code {
+  display: flex;
+  justify-content: left;
+  color: #646566;
+  font-size: smaller;
+  padding: 0 32rpx
+}
+
+.van-count-down {
+  --count-down-text-color: #646566;
+  --count-down-font-size: 13.3333px;
+}
+
+.left {
+  display: flex;
+  width: 250rpx;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.index {
+  width: 35rpx;
+  display: inline-flex;
+  justify-content: left;
+  color: #323233;
+}
+
+.name {
+  display: inline-flex;
+  color: #323233;
+}
+
+.register {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-weight: bold;
+}
+
+.van-tag--default{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 16px;
+}
+
+.van-tag--plain {
+  display: flex;
+  justify-content: center;
+  width: 85rpx;
+}
+
+.time {
+  /* color: #323233; */
+  display: flex;
+  justify-content: flex-end;
+  width: 150rpx;
+  font-size: smaller;
+}
+
+.revokeButton {
+  margin-top: 1vh;
+}
+
+.iconBack {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 20%);
+}
+
+.add-wrap {
+  width: 66px;
+  height: 66px;
+  position: fixed;
+  right: 2vw;
+  bottom: 90px;
+  z-index: 9;
+  border-radius: 120rpx 0rpx 0 0rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 15rpx;
+  border: #ffffff;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  z-index: 99999;
+  border-radius: 5%;
+}
+
+.block {
+  width: 80vw;
+  height: 30vh;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.block .van-cell__title {
+  width: 250px;
+}
+
+.value-class {
+  flex: none !important;
+}

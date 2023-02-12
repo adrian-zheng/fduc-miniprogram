@@ -1,0 +1,15 @@
+<!--pages/home/activity.wxml-->
+<image style="display:block; height: {{navH}}px; width: {{deviceW}}px;" mode="scaleToFill"
+src="{{navbarUrl}}"></image>
+
+<van-tabs animated color='#ffffff' nav-class="tabs" swipeable
+title-inactive-color="#c4c4c4" title-active-color="white">
+  <van-tab title="进行中" class="intro">
+    <scroll-view scroll-y="true" style="height: {{safeH}}px;"></scroll-view>
+  </van-tab>
+
+  <van-tab title="已结束" class="intro">
+    <scroll-view scroll-y="true" style="height: {{safeH}}px;"></scroll-view>
+  </van-tab>
+
+</van-tabs>

@@ -1,0 +1,9 @@
+.colors {
+  color: #b15373;
+  color: #646566;
+  color: #5ba585;
+  color: #c69464;
+  color: #8daaf8;
+  color: #fc989f;
+  color: #F5F5F5;
+}

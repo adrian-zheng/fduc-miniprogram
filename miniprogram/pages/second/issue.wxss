@@ -1,0 +1,30 @@
+/* pages/second/issue.wxss */
+.profile-btn button{
+  /* background: #ff495e; */
+  background: #9e063b;
+  color: #ffffff;
+  width: 50vw;
+  margin-top: 20rpx;
+  border-radius: 50rpx;
+  font-size: 14px;
+}
+
+.van-cell-group__title {
+  margin-top: 15px;
+  --cell-group-title-font-size: 20px;
+  --cell-group-title-color: #c8849b
+}
+
+.vanBlock, .blockContent {
+  --cell-group-inset-padding: 10rpx 30rpx 10rpx;
+  --cell-background-color: #F5F5F5;
+  --cell-border-color: #F5F5F5;
+  /* --cell-font-size: 32rpx */
+}
+
+.emptyFeedback {
+  display: flex;
+  justify-content: center;
+  padding-top: 2.5vh;
+  color: #646566;
+}

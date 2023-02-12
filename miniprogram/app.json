@@ -1,0 +1,78 @@
+{
+  "tabBar": {
+    "custom": true,
+    "color": "#000000",
+    "selectedColor": "#9e063b",
+    "backgroundColor": "#000000",
+    "list": [{
+      "pagePath": "pages/home/fduc",
+      "text": "FDUC"
+    },{
+      "pagePath": "pages/home/rehearsal",
+      "text": "排练"
+    },{
+      "pagePath": "pages/home/people",
+      "text": "团员"
+    },{
+      "pagePath": "pages/home/my",
+      "text": "我的"
+    }]
+  },
+
+  "pages": [
+    "pages/home/fduc",
+    "pages/home/rehearsal",
+    "pages/home/people",
+    "pages/home/my",
+    "pages/attendance/attendance",
+    "pages/form/consent",
+    "pages/second/join",
+    "pages/second/login",
+    "pages/second/peopleManage",
+    "pages/second/issue",
+    "pages/second/bilibiliPage"
+  ],
+  "window": {
+    "backgroundColor": "#ffffff",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#9e063b",
+    "navigationBarTitleText": "FDUC+",
+    "navigationBarTextStyle": "white",
+    "navigationStyle": "custom"
+  },
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-picker": "@vant/weapp/picker/index",
+    "van-radio": "@vant/weapp/radio/index",
+    "van-radio-group": "@vant/weapp/radio-group/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-uploader": "@vant/weapp/uploader/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-transition": "@vant/weapp/transition/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-tabbar": "@vant/weapp/tabbar/index",
+    "van-tabbar-item": "@vant/weapp/tabbar-item/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-count-down": "@vant/weapp/count-down/index",
+    "van-sidebar": "@vant/weapp/sidebar/index",
+    "van-sidebar-item": "@vant/weapp/sidebar-item/index",
+    "van-divider": "@vant/weapp/divider/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
+    "van-circle": "@vant/weapp/circle/index",
+    "van-dropdown-menu": "@vant/weapp/dropdown-menu/index",
+    "van-dropdown-item": "@vant/weapp/dropdown-item/index",
+    "van-overlay": "@vant/weapp/overlay/index",
+    "van-checkbox": "@vant/weapp/checkbox/index",
+    "van-checkbox-group": "@vant/weapp/checkbox-group/index",
+    "van-swipe-cell": "@vant/weapp/swipe-cell/index"
+  }
+}

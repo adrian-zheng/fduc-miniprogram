@@ -1,0 +1,7 @@
+<view bindtap="clickRow" 
+data-id="{{item._id}}" 
+data-idx="{{index}}"
+class="row" wx:for="{{dataList}}" wx:key="index">
+  <view class="title">{{index+1}}. {{item.title}}</view>
+  <view>hits: {{item.hits}}</view>
+</view>

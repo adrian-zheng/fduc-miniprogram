@@ -1,0 +1,44 @@
+<!--pages/second/login.wxml-->
+<view style="height: {{navH}}px; width: {{deviceW}}px; background-image: url({{navbarUrl}}); background-size: 100% 100%;">
+  <van-icon name="arrow-left" color="white" size="{{backHeight}}"
+  custom-style="padding: {{backPaddingTop}}px 0 0 12px" bind:click="back"/>
+</view>
+
+<view class="inputPosition">
+  <van-cell-group class="input" title="团员登录">
+    <van-field
+    model:value="{{ username }}"
+    center
+    clearable
+    label="账号"
+    placeholder="请输入账号"
+    border="{{ false }}"
+    use-button-slot />
+      <!-- <van-button color="#b15373" slot="button" size="small"
+      bind:click="checkCodeword" disabled="{{checked}}">
+        点击签到
+      </van-button> -->
+    <!-- </van-field> -->
+    <van-field
+    model:value="{{ password }}"
+    center
+    clearable
+    label="密码"
+    password
+    placeholder="请输入密码"
+    border="{{ false }}"
+    use-button-slot />
+  </van-cell-group> 
+  <view class="profile-btn">
+    <button bindtap="onLogin">登录</button>
+  </view>
+</view>
+
+<van-dialog
+  show="{{ showDialog }}"
+  message='登录成功'
+  confirm-button-text='确认'
+  confirm-button-color="#b15373"
+  bind:confirm='backHome'
+  custom-style="font-family: sans-serif;"
+/>

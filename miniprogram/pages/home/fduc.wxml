@@ -1,0 +1,60 @@
+<!--pages/home/fduc.wxml-->
+<import src="../template/template.wxml" />
+
+<image style="display:block; height: {{navH}}px; width: {{deviceW}}px;" mode="scaleToFill"
+src="{{navbarUrl}}"></image>
+
+<van-tabs animated color='#ffffff' nav-class="tabs" swipeable
+title-inactive-color="#c4c4c4" title-active-color="white">
+  <van-tab title="团队介绍" class="intro"> 
+    
+    <scroll-view scroll-y="true" style="height: {{safeH}}px;">
+      <view style="padding-bottom: 10vh">
+        <view class="img introB">
+          <image mode="widthFix" style="border-radius: 20rpx"
+          src="cloud://fduc-4gvelrvtea694888.6664-fduc-4gvelrvtea694888-1311978484/LOGO_red_white_text.png"/>
+        </view>
+
+        <view class="introBwho">
+          <view class="subtitle">我们是谁？</view>
+          <text class="text" user-select="true">复旦大学学生合唱团隶属于复旦大学艺术教育中心，创建于1987年，原称合唱组，1995年正式扩建为合唱团。2000年被上海市艺术教育委员会正式批准命名为“上海市大学生艺术团合唱团”。2005年，复旦大学被上海市科教党委确定为“上海市大学生合唱艺术实践基地”。该团目前由陈瑜老师任总团长兼艺术指导、指挥，同时设有学生团长及骨干共同管理，目前全团有260余人。三十多年来合唱团曾得到世界各地音乐家、教育家、社会各界的关心与指导，发展迅速。合唱团曲目涉猎广泛，频频与国内外知名高校、乐团、音乐家合作交流演出；曾多次获得全国大学生艺术展演一等奖、国际合唱金奖。</text>
+          <text class="text" user-select="true">近年来，合唱团作为复旦大学以合唱形式开展美育工作的阵地，已承担百余场面向全市师生的国际化合唱师资培训，是合唱教育普及的积极推行者，是以合唱形式开展大中小学美育育人模式构建的阵地。</text>
+        </view>
+
+        <view class="introBcharm">
+          <view class="subtitle">风采展示</view>
+            <van-image bind:click="onImage" radius="5px" fit="cover" width="85vw" height="20vh" src="cloud://fduc-4gvelrvtea694888.6664-fduc-4gvelrvtea694888-1311978484/fducCharm/大艺展初赛1.jpeg" data-picName="大艺展初赛1.jpeg"/>
+            <view style="display: flex; justify-content: space-between;">
+              <van-image bind:click="onImage" radius="5px" fit="cover" width="53.5vw" height="20vh" src="cloud://fduc-4gvelrvtea694888.6664-fduc-4gvelrvtea694888-1311978484/fducCharm/大艺展初赛2.jpeg"data-picName="大艺展初赛2.jpeg" />
+              <van-image bind:click="onImage" radius="5px" fit="cover" width="30.5vw" height="20vh" src="cloud://fduc-4gvelrvtea694888.6664-fduc-4gvelrvtea694888-1311978484/fducCharm/大艺展初赛3.jpeg" data-picName="大艺展初赛3.jpeg"/>
+            </view>
+            <van-image bind:click="onImage" radius="5px" fit="cover" width="85vw" height="20vh" src="cloud://fduc-4gvelrvtea694888.6664-fduc-4gvelrvtea694888-1311978484/fducCharm/大艺展决赛.jpeg" data-picName="大艺展决赛.jpeg"/>
+            <view class="charmText">第六届全国大学生艺术展演（一等奖）</view>
+            <van-image bind:click="onImage" radius="5px" fit="cover" width="85vw" height="25vh" src="cloud://fduc-4gvelrvtea694888.6664-fduc-4gvelrvtea694888-1311978484/fducCharm/misa.jpeg" data-picName="misa.jpeg"/>
+            <view class="charmText">MISA上海国际夏季音乐节合唱专场</view>
+            <van-image bind:click="onImage" radius="5px" fit="cover" width="85vw" height="25vh" src="cloud://fduc-4gvelrvtea694888.6664-fduc-4gvelrvtea694888-1311978484/fducCharm/红旗颂.jpeg" data-picName="红旗颂.jpeg"/>
+            <view class="charmText">「望道大讲堂」望峥嵘岁月 道红旗颂歌</view>
+            <van-image bind:click="onImage" radius="5px" fit="cover" width="85vw" height="25vh" src="cloud://fduc-4gvelrvtea694888.6664-fduc-4gvelrvtea694888-1311978484/fducCharm/长征组歌.png" data-picName="长征组歌.png"/>
+            <view class="charmText">庆祝建党100周年交响合唱《长征组歌》</view>
+
+          </view>
+        
+      </view>
+    </scroll-view>
+
+  </van-tab>
+
+
+  <van-tab title="代表作品">
+  <!-- bilibili AppID: wx7564fd5313d24844 -->
+    <scroll-view scroll-y="true" style="height: {{safeH}}px;">
+      <view style="padding-bottom: 10vh">
+        <view wx:for="{{songData}}" wx:key="item" wx:for-item="value">
+          <!-- <view>{{value.songTitle}}</view> -->
+          <template is="songBlock" data = "{{...value}}"/>
+        </view>
+      </view>
+    </scroll-view>
+    
+  </van-tab>
+</van-tabs>
